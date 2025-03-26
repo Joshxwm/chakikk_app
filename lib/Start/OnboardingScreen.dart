@@ -1,3 +1,5 @@
+import 'package:chakikk_app/UI/Account/loginScreen.dart';
+import 'package:chakikk_app/UI/Account/regScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
@@ -57,6 +59,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       _currentPage = index;
     });
 
+    // Solo cambiar el video si es necesario
     if (_videoController.value.isInitialized) {
       _videoController.seekTo(Duration.zero);
       _videoController.play();
@@ -64,11 +67,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   void _goToRegister() {
-    // Implementa la navegación a la pantalla de registro
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const RegScreen()),
+    );
   }
 
   void _goToLogin() {
-    // Implementa la navegación a la pantalla de inicio de sesión
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
+    );
   }
 
   @override
@@ -76,6 +85,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return Scaffold(
       body: Stack(
         children: [
+          // Video de fondo
           Positioned.fill(
             child:
                 _videoController.value.isInitialized
@@ -97,7 +107,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 20), // Espacio donde estaba el logo
+                    Image.asset("assets/images/logo.jpg", height: 80),
+                    const SizedBox(height: 10),
                     const Text(
                       "Chak iik’ App",
                       style: TextStyle(
@@ -122,7 +133,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             },
           ),
 
-          // Indicadores de página y botón de registro
+          // Indicadores de página
           Positioned(
             left: 16,
             right: 16,

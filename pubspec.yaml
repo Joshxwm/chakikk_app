@@ -42,7 +42,6 @@ dependencies:
   google_maps_flutter: ^2.10.0
   location: ^7.0.1
   flutter_map: ^8.1.1
-  mapbox_gl: ^0.16.0
   syncfusion_flutter_maps: ^28.2.6
   video_player: ^2.9.2  
 

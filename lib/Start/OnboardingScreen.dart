@@ -1,5 +1,3 @@
-import 'package:chakikk_app/UI/Account/loginScreen.dart';
-import 'package:chakikk_app/UI/Account/regScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
@@ -11,8 +9,9 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
-  final PageController _pageController = PageController();
   int _currentPage = 0;
+  late VideoPlayerController _videoController;
+  late PageController _pageController;
 
   final List<Map<String, String>> _pages = [
     {
@@ -30,18 +29,46 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     },
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+    _initializeVideo();
+  }
+
+  void _initializeVideo() {
+    _videoController = VideoPlayerController.asset(_pages[0]["video"]!)
+      ..initialize().then((_) {
+        setState(() {});
+        _videoController.play();
+        _videoController.setLooping(true);
+      });
+  }
+
+  @override
+  void dispose() {
+    _videoController.dispose();
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void _onPageChanged(int index) {
+    setState(() {
+      _currentPage = index;
+    });
+
+    if (_videoController.value.isInitialized) {
+      _videoController.seekTo(Duration.zero);
+      _videoController.play();
+    }
+  }
+
   void _goToRegister() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const RegScreen()),
-    );
+    // Implementa la navegación a la pantalla de registro
   }
 
   void _goToLogin() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const LoginScreen()),
-    );
+    // Implementa la navegación a la pantalla de inicio de sesión
   }
 
   @override
@@ -49,77 +76,53 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return Scaffold(
       body: Stack(
         children: [
+          Positioned.fill(
+            child:
+                _videoController.value.isInitialized
+                    ? AspectRatio(
+                      aspectRatio: _videoController.value.aspectRatio,
+                      child: VideoPlayer(_videoController),
+                    )
+                    : const Center(child: CircularProgressIndicator()),
+          ),
+
+          // Contenido del PageView
           PageView.builder(
             controller: _pageController,
             itemCount: _pages.length,
-            onPageChanged: (index) {
-              setState(() {
-                _currentPage = index;
-              });
-            },
+            onPageChanged: _onPageChanged,
             itemBuilder: (context, index) {
-              // Usamos VideoPlayer si hay un video en la página
-              final videoUrl = _pages[index]["video"]!;
-              VideoPlayerController _controller = VideoPlayerController.asset(
-                videoUrl,
-              );
-
-              return Stack(
-                children: [
-                  // Video de fondo (si es necesario)
-                  FutureBuilder(
-                    future: _controller.initialize(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        _controller.play();
-                        return AspectRatio(
-                          aspectRatio: _controller.value.aspectRatio,
-                          child: VideoPlayer(_controller),
-                        );
-                      } else {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                    },
-                  ),
-
-                  // Contenido de la pantalla
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          "assets/images/logo.png", // Asegúrate de tener el logo
-                          height: 80,
-                        ),
-                        const SizedBox(height: 10),
-                        const Text(
-                          "Chak iik’ App",
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                        const SizedBox(height: 100),
-                        Text(
-                          _pages[index]["text"]!,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
+              return Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 20), // Espacio donde estaba el logo
+                    const Text(
+                      "Chak iik’ App",
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 100),
+                    Text(
+                      _pages[index]["text"]!,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
               );
             },
           ),
 
-          // Botón de navegación entre páginas
+          // Indicadores de página y botón de registro
           Positioned(
             left: 16,
             right: 16,

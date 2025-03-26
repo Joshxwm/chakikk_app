@@ -1,3 +1,4 @@
+import 'package:chakikk_app/Start/OnboardingScreen.dart';
 import 'package:flutter/material.dart';
 
 class LogScreen extends StatefulWidget {
@@ -15,20 +16,21 @@ class _LogScreenState extends State<LogScreen> {
   void initState() {
     super.initState();
 
-    Future.delayed(const Duration(milliseconds: 500), () {
-      if (mounted) {
-        // Verifica si el widget aún está montado
-        setState(() {
-          _opacity = 1.0;
-          _scale = 1.0;
-        });
-      }
+    // Iniciar animación después del primer frame
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        _opacity = 1.0;
+        _scale = 1.0;
+      });
     });
 
-    Future.delayed(const Duration(seconds: 2), () {
+    // Redirigir después de la animación a OnboardingScreen
+    Future.delayed(const Duration(seconds: 3), () {
       if (mounted) {
-        // Verifica si el widget aún está montado
-        Navigator.pushReplacementNamed(context, '/onboarding');
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const OnboardingScreen()),
+        );
       }
     });
   }
@@ -36,6 +38,7 @@ class _LogScreenState extends State<LogScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white, // Fondo blanco para mejor visibilidad
       body: Center(
         child: AnimatedOpacity(
           duration: const Duration(seconds: 2),
@@ -46,8 +49,11 @@ class _LogScreenState extends State<LogScreen> {
             curve: Curves.easeOutExpo,
             child: Image.asset(
               'assets/images/logo.jpg',
-              width: 200,
-              height: 200,
+              width: MediaQuery.of(context).size.width * 0.5,
+              height: MediaQuery.of(context).size.width * 0.5,
+              errorBuilder: (context, error, stackTrace) {
+                return const Icon(Icons.error, size: 100, color: Colors.red);
+              },
             ),
           ),
         ),

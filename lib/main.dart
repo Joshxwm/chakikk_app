@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      routerConfig: _router, // Configuración del enrutador
+      routerConfig: _router,
       debugShowCheckedModeBanner: false,
     );
   }
@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
 
 // Configuración de GoRouter
 final GoRouter _router = GoRouter(
-  initialLocation: '/log',
+  initialLocation: '/onboarding', // Se inicia en OnboardingScreen
   routes: [
     GoRoute(path: '/log', builder: (context, state) => const LogScreen()),
     GoRoute(
@@ -45,6 +45,6 @@ final GoRouter _router = GoRouter(
     ),
     GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
     GoRoute(path: '/register', builder: (context, state) => const RegScreen()),
-    GoRoute(path: '/home', builder: (context, state) => HomeScreen()),
+    GoRoute(path: '/home', builder: (context, state) => const HomeScreen()),
   ],
 );

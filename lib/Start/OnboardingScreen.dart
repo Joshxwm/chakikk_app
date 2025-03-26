@@ -59,7 +59,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       _currentPage = index;
     });
 
-    // Solo cambiar el video si es necesario
     if (_videoController.value.isInitialized) {
       _videoController.seekTo(Duration.zero);
       _videoController.play();
@@ -67,7 +66,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   void _goToRegister() {
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => const RegScreen()),
     );
@@ -85,7 +84,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          // Video de fondo
           Positioned.fill(
             child:
                 _videoController.value.isInitialized
@@ -107,8 +105,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset("assets/images/logo.jpg", height: 80),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 20), // Espacio donde estaba el logo
                     const Text(
                       "Chak iik’ App",
                       style: TextStyle(
@@ -133,7 +130,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             },
           ),
 
-          // Indicadores de página
+          // Indicadores de página y botón de registro
           Positioned(
             left: 16,
             right: 16,

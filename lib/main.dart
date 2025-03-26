@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
 
 // Configuración de GoRouter
 final GoRouter _router = GoRouter(
-  initialLocation: '/onboarding', // Se inicia en OnboardingScreen
+  initialLocation: '/onboarding', // Inicia en OnboardingScreen
   routes: [
     GoRoute(path: '/log', builder: (context, state) => const LogScreen()),
     GoRoute(

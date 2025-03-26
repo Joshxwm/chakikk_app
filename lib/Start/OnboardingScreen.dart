@@ -1,6 +1,7 @@
 import 'package:chakikk_app/UI/Account/loginScreen.dart';
 import 'package:chakikk_app/UI/Account/regScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:video_player/video_player.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -66,17 +67,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   void _goToRegister() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const RegScreen()),
-    );
+    context.push('/register');
   }
 
   void _goToLogin() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const LoginScreen()),
-    );
+    context.push('/login');
   }
 
   @override

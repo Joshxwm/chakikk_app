@@ -1,6 +1,6 @@
-import 'package:chakikk_app/Start/HomeScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart'; // Importa GoRouter
 
 class RegScreen extends StatefulWidget {
   const RegScreen({super.key});
@@ -33,7 +33,7 @@ class _RegScreenState extends State<RegScreen> {
         _passwordController.text.isEmpty ||
         _usernameController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Por favor, complete todos los campos')),
+        const SnackBar(content: Text('Por favor, complete todos los campos')),
       );
       setState(() {
         _isLoading = false;
@@ -43,7 +43,7 @@ class _RegScreenState extends State<RegScreen> {
 
     if (_passwordController.text.length < 6) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('La contraseña debe tener al menos 6 caracteres'),
         ),
       );
@@ -59,10 +59,10 @@ class _RegScreenState extends State<RegScreen> {
         password: _passwordController.text.trim(),
       );
 
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
-      );
+      // Navegar a HomeScreen usando GoRouter
+      if (context.mounted) {
+        context.push('/home'); // Usa context.push en lugar de Navigator
+      }
     } catch (e) {
       ScaffoldMessenger.of(
         context,
@@ -82,7 +82,7 @@ class _RegScreenState extends State<RegScreen> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => context.pop(), // Usa context.pop() para regresar
         ),
       ),
       body: Padding(
@@ -186,13 +186,13 @@ class _RegScreenState extends State<RegScreen> {
         ),
         child:
             _isLoading
-                ? CircularProgressIndicator()
+                ? const CircularProgressIndicator()
                 : Ink(
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
                       colors: [Color(0xFF4ABEFF), Color(0xFF41E6C1)],
                     ),
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
                   ),
                   child: Container(
                     alignment: Alignment.center,

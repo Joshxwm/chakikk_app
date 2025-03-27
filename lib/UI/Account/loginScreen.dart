@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -40,7 +41,8 @@ class _LoginScreenState extends State<LoginScreen> {
         context,
       ).showSnackBar(const SnackBar(content: Text('Inicio de sesión exitoso')));
 
-      Navigator.pushNamed(context, '/home');
+      // Navegación con context.push() usando go_router
+      context.push('/home');
     } catch (e) {
       ScaffoldMessenger.of(
         context,
@@ -158,7 +160,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _buildSignUpText() {
     return TextButton(
       onPressed: () {
-        Navigator.pushNamed(context, '/register');
+        context.push('/register'); // Navegación a la pantalla de registro
       },
       child: const Text.rich(
         TextSpan(
